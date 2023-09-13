@@ -6,3 +6,4 @@ chadwm/*.rej
 .ccls-cache/
 .direnv
 .idea
+logs
