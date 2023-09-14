@@ -3,37 +3,37 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int default_border = 0;   /* to switch back to default border after dynamic border resizing via keybinds */
+static const unsigned int borderpx  = 0;        /* 窗口的边框像素 */
+static const unsigned int default_border = 0;   /* 通过按键绑定动态调整边框大小后切换回默认边框 */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails,display systray on the 1st monitor,False: display systray on last monitor*/
-static const int showsystray        = 1;        /* 0 means no systray */
-static const int showbar            = 1;        /* 0 means no bar */
+static const unsigned int gappih    = 10;       /* 水平窗口之间的内部间隙 */
+static const unsigned int gappiv    = 10;       /* 垂直窗口之间的内部间隙 */
+static const unsigned int gappoh    = 10;       /* 窗口和屏幕边缘之间的水平外部间隙 */
+static const unsigned int gappov    = 10;       /* 垂直窗口和屏幕边缘之间的外部间隙 */
+static const int smartgaps          = 0;        /* 1表示只有一个窗口时没有外部间隙 */
+static const unsigned int systraypinning = 0;   /* 0: 系统托盘跟随选定的监视器，>0: 将系统托盘固定到监视器 X */
+static const unsigned int systrayspacing = 2;   /* 系统托盘间距 */
+static const int systraypinningfailfirst = 1;   /* 1：如果固定失败，则在第一个显示器上显示系统托盘，0：在最后一个显示器上显示系统托盘*/
+static const int showsystray        = 1;        /* 0 表示没有系统托盘 */
+static const int showbar            = 1;        /* 0 表示没有顶栏 */
 static const int showtab            = showtab_auto;
-static const int toptab             = 1;        /* 0 means bottom tab */
-static const int floatbar           = 1;/* 1 means the bar will float(don't have padding),0 means the bar have padding */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 5;
-static const int vertpadbar         = 11;
-static const int vertpadtab         = 35;
-static const int horizpadtabi       = 15;
-static const int horizpadtabo       = 15;
-static const int scalepreview       = 4;
-static const int tag_preview        = 0;        /* 1 means enable, 0 is off */
-static const int colorfultag        = 1;        /* 0 means use SchemeSel for selected non vacant tag */
+static const int toptab             = 1;        /* 0 表示底部tab选项卡 */
+static const int floatbar           = 1;        /* 1 表示栏将浮动（没有内边距），0 表示栏有内边距 */
+static const int topbar             = 1;        /* 0 表示底部栏 */
+static const int horizpadbar        = 5;        /* bar的水平填充占位长度 */
+static const int vertpadbar         = 11;       /* bar的垂直填充占位长度 */
+static const int horizpadtabi       = 15;       /* tab 内部 的水平填充占位长度 */
+static const int horizpadtabo       = 15;       /* tab 外部 的水平填充占位长度 */
+static const int vertpadtab         = 35;       /* tab的垂直填充占位长度 */
+static const int scalepreview       = 4;        /* 预览时缩小几倍（除以几） */
+static const int tag_preview        = 0;        /* 1表示启用，0表示关闭 */
+static const int colorfultag        = 1;        /* 0 表示对选定的非空tag使用默认的SchemeSel配色 */
 static const char *upvol[]   = { "pactl", "set-sink-volume", "0", "+5%",     NULL };
 static const char *downvol[] = { "pactl", "set-sink-volume", "0", "-5%",     NULL };
 static const char *mutevol[] = { "pactl", "set-sink-mute",   "0", "toggle",  NULL };
 static const char *light_up[] = {"light", "-A", "5", NULL};
 static const char *light_down[] = {"light", "-U", "5", NULL};
-static const int new_window_attach_on_end = 0; /*  1 means the new window will attach on the end; 0 means the new window will attach on the front,default is front */
+static const int new_window_attach_on_end = 1; /*  1表示新窗口将附着在最后； 0 表示新窗口将附加在前面，默认为前面 */
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
@@ -46,7 +46,7 @@ static const char *colors[][3]      = {
     /*                     fg       bg      border */
     [SchemeNorm]       = { gray3,   black,  gray2 },
     [SchemeSel]        = { gray4,   blue,   blue  },
-    [SchemeTitle]      = { white,   black,  black  }, // active window title
+    [SchemeTitle]      = { white,   black,  black }, // active window title
     [TabSel]           = { blue,    gray2,  black },
     [TabNorm]          = { gray3,   black,  black },
     [SchemeTag]        = { gray3,   black,  black },
@@ -55,7 +55,7 @@ static const char *colors[][3]      = {
     [SchemeTag3]       = { orange,  black,  black },
     [SchemeTag4]       = { green,   black,  black },
     [SchemeTag5]       = { pink,    black,  black },
-    [SchemeLayout]     = { green,   black,  black },
+    [SchemeLayout]     = { blue1,   black,  black },
     [SchemeBtnPrev]    = { green,   black,  black },
     [SchemeBtnNext]    = { yellow,  black,  black },
     [SchemeBtnClose]   = { red,     black,  black },
@@ -68,7 +68,7 @@ static const char* eww[] = { "eww", "open" , "eww", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
-    { eww,         "" },
+    { eww,         "" },
 };
 
 static const int tagschemes[] = {

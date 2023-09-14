@@ -10,3 +10,5 @@ static const char orange[]      = "#ffb86c";
 static const char yellow[]      = "#f1fa8c";
 static const char pink[]        = "#ff79c6";
 static const char col_borderbar[]  = "#21222c"; // inner border
+static const char blue1[]       = "#7EBAE4"; // nixos light blue
+static const char blue2[]       = "#5277C3"; // nixos dark blue
